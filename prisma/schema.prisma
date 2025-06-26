@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  password          String
+  role              Role      @default(USER)
+  isEmailConfirmed  Boolean   @default(false)
+  emailConfirmationToken String?
+  resetPasswordToken String?
+  resetPasswordTokenExpires DateTime?
+  name              String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  orders            Order[]
+  reviews           Review[]
+  favorites         Favorite[]
+  interactions       UserProductInteraction[]
+}
+
+enum Role {
+  GUEST
+  USER
+  ADMIN
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  category    Category   @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  brand       String
+  thumbnail   String?
+  images      Image[]
+  reviews     Review[]
+  orderItems  OrderItem[]
+  favorites   Favorite[]
+  interactions UserProductInteraction[]
+  similarityAsSource ProductSimilarity[] @relation("ProductSimilarityProduct")
+  similarityAsTarget ProductSimilarity[] @relation("ProductSimilaritySimilarProduct")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  description String?
+  products  Product[]
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  user       User        @relation(fields: [userId], references: [id])
+  userId     Int
+  items      OrderItem[]
+  status     OrderStatus @default(PENDING)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELED
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  quantity   Int
+  price      Float
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  rating     Int
+  text       String
+  createdAt  DateTime @default(now())
+  moderated  Boolean  @default(false)
+}
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  url        String
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+}
+
+model Favorite {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  @@unique([userId, productId])
+}
+
+model UserProductInteraction {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  product_id Int
+  type       InteractionType
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [user_id], references: [id])
+  product Product @relation(fields: [product_id], references: [id])
+
+  @@index([user_id])
+  @@index([product_id])
+}
+
+enum InteractionType {
+  view
+  review
+  purchase
+  favorite
+}
+
+model ProductSimilarity {
+  id                 Int     @id @default(autoincrement())
+  product_id         Int
+  similar_product_id Int
+  score              Float
+
+  product         Product @relation("ProductSimilarityProduct", fields: [product_id], references: [id])
+  similarProduct  Product @relation("ProductSimilaritySimilarProduct", fields: [similar_product_id], references: [id])
+
+  @@index([product_id])
+  @@index([similar_product_id])
+  @@unique([product_id, similar_product_id])
+}

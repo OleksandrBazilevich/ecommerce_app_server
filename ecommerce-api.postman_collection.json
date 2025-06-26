@@ -1,0 +1,380 @@
+{
+  "info": {
+    "_postman_id": "ecommerce-api-collection",
+    "name": "Ecommerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["auth", "register"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"User One\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Confirm Email",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/auth/confirm-email",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["auth", "confirm-email"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{emailToken}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"password123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Refresh Token",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/auth/refresh",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["auth", "refresh"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Forgot Password",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/auth/forgot-password",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["auth", "forgot-password"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@example.com\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Reset Password",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/auth/reset-password",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["auth", "reset-password"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"newPassword\": \"newpassword123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Users - Get All",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["users"]
+        }
+      }
+    },
+    {
+      "name": "Users - Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/users/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["users", "me"]
+        }
+      }
+    },
+    {
+      "name": "Users - Update Role",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/users/1/role",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["users", "1", "role"]
+        },
+        "body": { "mode": "raw", "raw": "{\n  \"role\": \"ADMIN\"\n}" }
+      }
+    },
+    {
+      "name": "Users - Block User",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/users/1/block",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["users", "1", "block"]
+        }
+      }
+    },
+    {
+      "name": "Users - Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Products - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["products"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Product\",\n  \"description\": \"Test desc\",\n  \"brand\": \"TestBrand\",\n  \"price\": 100,\n  \"categoryId\": 1,\n  \"thumbnail\": \"https://img.com/1.jpg\",\n  \"images\": [\"https://img.com/1.jpg\"]\n}"
+        }
+      }
+    },
+    {
+      "name": "Products - Get All",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5110/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["products"]
+        }
+      }
+    },
+    {
+      "name": "Categories - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/categories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["categories"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"All electronics\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Orders - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/orders",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["orders"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1,\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 1, \"price\": 100 },\n    { \"productId\": 2, \"quantity\": 2, \"price\": 200 }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Reviews - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/reviews",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["reviews"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1,\n  \"productId\": 1,\n  \"content\": \"Good!\",\n  \"rating\": 5\n}"
+        }
+      }
+    },
+    {
+      "name": "Favorites - Add",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/favorites/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["favorites", "1"]
+        }
+      }
+    },
+    {
+      "name": "ProductView - Add",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/product-view/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["product-view", "1"]
+        }
+      }
+    },
+    {
+      "name": "Recommendations - Get",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:5110/recommendations",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["recommendations"]
+        }
+      }
+    },
+    {
+      "name": "Test Data - Insert user_product_interactions",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/test/user-product-interactions",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["test", "user-product-interactions"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "[{\n  \"user_id\": 1, \"product_id\": 1, \"type\": \"view\" },{\n  \"user_id\": 2, \"product_id\": 1, \"type\": \"purchase\" }]"
+        }
+      }
+    },
+    {
+      "name": "Test Data - Insert product_similarity",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:5110/test/product-similarity",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5110",
+          "path": ["test", "product-similarity"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "[{\n  \"product_id\": 1, \"similar_product_id\": 2, \"score\": 0.9 },{\n  \"product_id\": 1, \"similar_product_id\": 3, \"score\": 0.7 }]"
+        }
+      }
+    }
+  ]
+}
